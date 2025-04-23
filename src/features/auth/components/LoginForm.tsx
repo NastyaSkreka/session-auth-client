@@ -3,7 +3,7 @@
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@/shared/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useLoginMutation } from "../hooks/useLoginMutation";
+import { useLoginMutation } from "../hooks";
 import { LoginSchema, TypeLoginSchema } from "../schemes";
 import { AuthWrapper } from "./AuthWrapper";
 

@@ -57,6 +57,7 @@ export class FetchClient {
             ...options, 
             ...(!!this.options && {...this.options}),
             method, 
+            credentials: 'include',
             headers: {
                 ...(!!options?.headers && options.headers),
                 ...this.headers
@@ -93,7 +94,7 @@ export class FetchClient {
 
     public post<T>(
         endpoint: string, 
-        body?: Record<string, string>,
+        body?: Record<string, any>,
         options: RequestOptions = {}
     ) {
         return this.request<T>(endpoint, 'POST', {
