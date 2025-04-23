@@ -2,6 +2,7 @@
 
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@/shared/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../hooks";
 import { LoginSchema, TypeLoginSchema } from "../schemes";
@@ -59,7 +60,15 @@ export function LoginForm() {
               name="password"
               render={({field}) => (
                 <FormItem>
+                    <div className="flex items-center justify-between">
                     <FormLabel>Пароль</FormLabel>
+                    <Link
+                     href='/auth/reset-password'
+                     className="ml-auto inline-block text-sm underline"
+                    >
+                      Забыли пароль?
+                    </Link>
+                    </div>
                     <FormControl>
                         <Input placeholder="******" 
                         type="password"
