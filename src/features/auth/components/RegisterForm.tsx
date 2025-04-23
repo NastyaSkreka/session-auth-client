@@ -3,6 +3,7 @@
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@/shared/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRegisterMutation } from "../hooks";
 import { RegisterSchema, TypeRegisterSchema } from "../schemes";
 import { AuthWrapper } from "./AuthWrapper";
 
@@ -17,8 +18,10 @@ export function RegisterForm() {
      }
    })
 
+   const {register, isLoadingRegister} = useRegisterMutation()
+
    const onSubmit = (values: TypeRegisterSchema) => {
-     console.log(values)
+    register({ values })
    }
 
     return (
@@ -41,7 +44,9 @@ export function RegisterForm() {
                 <FormItem>
                     <FormLabel>Имя</FormLabel>
                     <FormControl>
-                        <Input placeholder="Настя" {...field}/>
+                        <Input placeholder="Настя" 
+                        disabled={isLoadingRegister}
+                        {...field}/>
                     </FormControl>
                     <FormMessage/>
                 </FormItem>
@@ -57,6 +62,7 @@ export function RegisterForm() {
                     <FormControl>
                         <Input placeholder="nastya@example.com" 
                         type="email"
+                        disabled={isLoadingRegister}
                         {...field}/>
                     </FormControl>
                     <FormMessage/>
@@ -73,6 +79,7 @@ export function RegisterForm() {
                     <FormControl>
                         <Input placeholder="******" 
                         type="password"
+                        disabled={isLoadingRegister}
                         {...field}/>
                     </FormControl>
                     <FormMessage/>
@@ -89,13 +96,14 @@ export function RegisterForm() {
                     <FormControl>
                         <Input placeholder="******" 
                         type="password"
+                        disabled={isLoadingRegister}
                         {...field}/>
                     </FormControl>
                     <FormMessage/>
                 </FormItem>
               )}
             />
-            <Button type="submit">Создать аккаунт</Button>
+            <Button type="submit" disabled={isLoadingRegister}>Создать аккаунт</Button>
         </form>
        </Form>
         </AuthWrapper>
