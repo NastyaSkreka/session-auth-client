@@ -3,7 +3,6 @@
 import { toastMessageHandler } from "@/shared/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { toast } from "sonner";
 import { TypeNewPasswordSchema } from "../schemes";
 import { passwordRecoveryService } from "../services";

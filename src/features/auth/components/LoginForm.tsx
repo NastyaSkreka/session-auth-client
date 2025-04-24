@@ -3,12 +3,15 @@
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@/shared/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../hooks";
 import { LoginSchema, TypeLoginSchema } from "../schemes";
 import { AuthWrapper } from "./AuthWrapper";
 
 export function LoginForm() {
+   const [isShowTwoFactor, setIsShowFactor] = useState(false)
+
    const form = useForm<TypeLoginSchema>({
      resolver: zodResolver(LoginSchema), 
      defaultValues: {
@@ -17,7 +20,7 @@ export function LoginForm() {
      }
    })
 
-   const { login, isLoadingLogin } = useLoginMutation()
+   const { login, isLoadingLogin } = useLoginMutation(setIsShowFactor)
 
    const onSubmit = (values: TypeLoginSchema) => {
      login({values})
@@ -36,7 +39,26 @@ export function LoginForm() {
          className="grid gap-2 space-y-2"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          
+          {isShowTwoFactor && (
+             <FormField
+             control={form.control}
+             name="code"
+             render={({field}) => (
+               <FormItem>
+                   <FormLabel>Код</FormLabel>
+                   <FormControl>
+                       <Input
+                       disabled={isLoadingLogin}
+                       placeholder="123456" 
+                       {...field}/>
+                   </FormControl>
+                   <FormMessage/>
+               </FormItem>
+             )}
+           />
+          )}
+          {!isShowTwoFactor && (
+           <>
             <FormField
               control={form.control}
               name="email"
@@ -79,6 +101,8 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
+           </>
+          )}
             <Button type="submit" disabled={isLoadingLogin}>Войти в аккаунт</Button>
         </form>
        </Form>
