@@ -2,25 +2,42 @@
 
 import { Loading } from "@/shared/components/ui";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useVerificationMutation } from "../hooks";
 import { AuthWrapper } from "./AuthWrapper";
 
 export function NewVerificationForm() {
-    const searchParams = useSearchParams()
-    const token = searchParams.get('token')
+    const searchParams = useSearchParams();
+    const token = searchParams.get('token');
+    const { verification, isPending, isSuccess, isError } = useVerificationMutation();
 
-    const {verification} = useVerificationMutation()
+    const [isLoadingState, setIsLoading] = useState(true);
 
     useEffect(() => {
-        verification(token)
-    }, [token])
+        if (token) {
+            verification(token);
+        }
+    }, [token, verification]);
+
+    useEffect(() => {
+        if (!isPending) {
+            setIsLoading(false);
+        }
+    }, [isPending]);
 
     return (
+        <Suspense fallback={<Loading />}>
         <AuthWrapper heading="Подтверждение почты">
-            <div>
-                <Loading/>
-            </div>
+           
+                {isLoadingState ? (
+                    <Loading />
+                ) : isError ? (
+                    <div>Произошла ошибка. Попробуйте снова.</div>
+                ) : isSuccess ? (
+                    <div>Подтверждение завершено!</div>
+                ) : null}
+          
         </AuthWrapper>
-    )
+        </Suspense>
+    );
 }

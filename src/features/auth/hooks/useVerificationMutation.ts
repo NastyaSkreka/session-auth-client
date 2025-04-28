@@ -8,7 +8,7 @@ import { verificationService } from "../services";
 export function useVerificationMutation() {
     const router = useRouter()
 
-    const { mutate: verification } = useMutation({
+    const { mutate: verification, isPending, isSuccess, isError } = useMutation({
         mutationKey: ['new verification'],
         mutationFn: (token: string | null) => 
             verificationService.newVerification(token),
@@ -25,5 +25,5 @@ export function useVerificationMutation() {
           }
     })
 
-    return {verification}
+    return {verification, isPending, isSuccess, isError}
 }
